@@ -81,7 +81,7 @@
 
 [![Issue Tracker Screen Shot][product-screenshot]](https://example.com)
 
-IssueTracker is a system used for tracking bugs.
+Issue Tracker is the visual tool that empowers your team to manage any type of project, workflow, or task tracking
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
