@@ -138,7 +138,7 @@ _For more examples, please refer to the [Documentation](https://rawg.io/)_
 ## Roadmap
 
 - [x] Kick-off project
-- [ ] 
+- [ ]
 
 See the [open issues](https://github.com/beiryu/issue-tracker/issues) for a full list of proposed features (and known issues).
 
