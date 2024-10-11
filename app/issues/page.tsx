@@ -3,7 +3,7 @@ const IssuesPage = () => {
     <div>
       <h1>Issues</h1>
     </div>
-  )
-}
+  );
+};
 
-export default IssuesPage
+export default IssuesPage;
