@@ -2,7 +2,11 @@ import { issueSchema } from '@/app/validationSchemas';
 import prisma from '@/prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+interface DTO {
+  params: { id: string };
+}
+
+export async function PATCH(request: NextRequest, { params }: DTO) {
   const body = await request.json();
 
   const validationResult = issueSchema.safeParse(body);
@@ -13,9 +17,18 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const newIssue = await prisma.issue.create({
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  if (!issue) {
+    return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
+  }
+
+  const updatedIssue = await prisma.issue.update({
+    where: { id: issue.id },
     data: { title: body.title, description: body.description },
   });
 
-  return NextResponse.json(newIssue, { status: 201 });
+  return NextResponse.json(updatedIssue, { status: 200 });
 }
