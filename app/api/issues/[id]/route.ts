@@ -33,7 +33,10 @@ export async function PATCH(request: NextRequest, { params }: DTO) {
   return NextResponse.json(updatedIssue, { status: 200 });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function DELETE(request: NextRequest, { params }: DTO) {
+  console.log(request);
+
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(params.id) },
   });
@@ -46,5 +49,5 @@ export async function DELETE(request: NextRequest, { params }: DTO) {
     where: { id: issue.id },
   });
 
-  return NextResponse.json({ success: true }, { status: 200 })
+  return NextResponse.json({ success: true }, { status: 200 });
 }
