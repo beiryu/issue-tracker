@@ -7,10 +7,10 @@ interface Props {
 
 const statusToColorMap: Record<
   Status,
-  { label: string; color: 'red' | 'orange' | 'green' }
+  { label: string; color: 'red' | 'violet' | 'green' }
 > = {
   OPEN: { label: 'Open', color: 'red' },
-  IN_PROGRESS: { label: 'In Progress', color: 'orange' },
+  IN_PROGRESS: { label: 'In Progress', color: 'violet' },
   CLOSED: { label: 'Closed', color: 'green' },
 };
 
