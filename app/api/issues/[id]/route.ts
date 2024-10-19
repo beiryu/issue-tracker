@@ -1,5 +1,7 @@
+import authOptions from '@/app/auth/authOptions';
 import { issueSchema } from '@/app/validationSchemas';
 import prisma from '@/prisma/client';
+import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface DTO {
@@ -7,6 +9,12 @@ interface DTO {
 }
 
 export async function PATCH(request: NextRequest, { params }: DTO) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const body = await request.json();
 
   const validationResult = issueSchema.safeParse(body);
@@ -35,6 +43,12 @@ export async function PATCH(request: NextRequest, { params }: DTO) {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function DELETE(request: NextRequest, { params }: DTO) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   console.log(request);
 
   const issue = await prisma.issue.findUnique({
