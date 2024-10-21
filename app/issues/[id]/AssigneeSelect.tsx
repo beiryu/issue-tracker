@@ -9,38 +9,33 @@ import { User } from 'next-auth';
 import toast, { Toaster } from 'react-hot-toast';
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[]>({
-    queryKey: ['users'],
-    queryFn: () => axios.get<User[]>('/api/users').then((res) => res.data),
-    staleTime: 60 * 1000,
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
 
   if (isLoading) return <Skeleton />;
 
   if (error) return null;
 
+  const assigIssue = (userId: string) => {
+    axios
+      .patch(`/api/issues/${issue.id}`, {
+        assignedToUserId: userId === 'unasigned' ? null : userId,
+      })
+      .catch(() => {
+        toast.error('Changes could not be saved.');
+      });
+  };
+
   return (
     <div>
       <Select.Root
         defaultValue={issue.assignedToUserId || ''}
-        onValueChange={(userId) => {
-          axios.patch(`/api/issues/${issue.id}`, {
-            assignedToUserId: userId === 'unasigned' ? null : userId,
-          }).catch(() => {
-            toast.error('Changes could not be saved.');
-          });
-        }}
+        onValueChange={(userId) => assigIssue(userId)}
       >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
-            <Select.Item value={"unasigned"}>Unassigned</Select.Item>
+            <Select.Item value={'unasigned'}>Unassigned</Select.Item>
             {users?.map((user) => (
               <Select.Item key={user.id} value={user.id}>
                 {user.name}
@@ -52,6 +47,15 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
       <Toaster />
     </div>
   );
+};
+
+const useUsers = () => {
+  return useQuery<User[]>({
+    queryKey: ['users'],
+    queryFn: () => axios.get<User[]>('/api/users').then((res) => res.data),
+    staleTime: 60 * 1000,
+    retry: 3,
+  });
 };
 
 export default AssigneeSelect;
