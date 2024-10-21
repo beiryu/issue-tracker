@@ -25,6 +25,17 @@ export async function PATCH(request: NextRequest, { params }: DTO) {
     });
   }
 
+  const { title, description, assignedToUserId } = body;
+  if (assignedToUserId) {
+    const user = await prisma.user.findUnique({
+      where: { id: assignedToUserId },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 400 });
+    }
+  }
+
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(params.id) },
   });
@@ -35,7 +46,11 @@ export async function PATCH(request: NextRequest, { params }: DTO) {
 
   const updatedIssue = await prisma.issue.update({
     where: { id: issue.id },
-    data: { title: body.title, description: body.description },
+    data: {
+      title,
+      description,
+      assignedToUserId,
+    },
   });
 
   return NextResponse.json(updatedIssue, { status: 200 });
