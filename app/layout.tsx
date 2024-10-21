@@ -31,9 +31,9 @@ export default function RootLayout({
             <Theme accentColor="violet" radius="small">
               <NavBar />
               <main className="p-5">
-              <Container>{children}</Container>
-            </main>
-            {/* <ThemePanel /> */}
+                <Container>{children}</Container>
+              </main>
+              {/* <ThemePanel /> */}
             </Theme>
           </AuthProvider>
         </QueryClientProvider>
