@@ -1,5 +1,5 @@
 import authOptions from '@/app/auth/authOptions';
-import { issueSchema } from '@/app/validationSchemas';
+import { patchIssueSchema } from '@/app/validationSchemas';
 import prisma from '@/prisma/client';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
@@ -17,7 +17,7 @@ export async function PATCH(request: NextRequest, { params }: DTO) {
 
   const body = await request.json();
 
-  const validationResult = issueSchema.safeParse(body);
+  const validationResult = patchIssueSchema.safeParse(body);
 
   if (!validationResult.success) {
     return NextResponse.json(validationResult.error.flatten().fieldErrors, {
