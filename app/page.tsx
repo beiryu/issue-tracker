@@ -13,8 +13,8 @@ export default async function Home() {
   const closed = await prisma.issue.count({ where: { status: 'CLOSED' } });
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Grid columns={{ initial: '1', md: '2' }}>
+    <main>
+      <Grid columns={{ initial: '1', md: '2' }} gap="5">
         <Flex direction="column" gap="5">
           <IssueSummary open={open} inProgress={inProgress} closed={closed} />
           <IssueChart open={open} inProgress={inProgress} closed={closed} />
